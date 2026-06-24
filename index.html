@@ -24,6 +24,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <!-- Kalkulator emisi (style ditaruh di sini agar cukup mengunggah 1 file: index.html) -->
+  <style id="calc-styles">
+    .calc{display:grid;grid-template-columns:340px 1fr;gap:28px;margin-top:40px;align-items:start}
+    @media(max-width:760px){.calc{grid-template-columns:1fr;gap:22px}}
+    .calc__control{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+    .calc__control label{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo)}
+    .calc__inputrow{display:flex;align-items:baseline;gap:10px;margin-top:12px}
+    #calc-km{font-family:var(--font-display);font-weight:800;font-size:2.6rem;width:100%;border:0;border-bottom:3px solid var(--navy);color:var(--navy);padding:4px 0;background:transparent}
+    #calc-km:focus{outline:none;border-color:var(--gold)}
+    .calc__unit{font-family:var(--font-display);font-weight:800;font-size:1.4rem;color:var(--muted)}
+    .calc__range{width:100%;margin-top:18px;accent-color:var(--navy)}
+    .calc__hint{color:var(--muted);font-size:13px;margin-top:10px}
+    .calc__results{display:flex;flex-direction:column;gap:12px}
+    .calc__row{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+    .calc__row--walk{background:var(--navy);border-color:var(--navy);color:#fff}
+    .calc__rowhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+    .calc__mode{font-weight:700}
+    .calc__val{font-family:var(--font-display);font-weight:800;font-size:1.25rem;color:var(--navy);white-space:nowrap}
+    .calc__row--walk .calc__val{color:var(--gold)}
+    .calc__bar{height:8px;border-radius:99px;background:var(--paper-2);margin-top:10px;overflow:hidden}
+    .calc__row--walk .calc__bar{background:rgba(255,255,255,.18)}
+    .calc__fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--indigo),var(--gold));width:0;transition:width .35s var(--ease)}
+    .calc__sub{font-size:12.5px;color:var(--muted);margin-top:8px}
+    .calc__row--walk .calc__sub{color:var(--muted-2)}
+    .calc__highlight{margin-top:22px;background:var(--gold);color:var(--navy);border-radius:var(--radius);padding:18px 22px;font-weight:600;line-height:1.5}
+    .calc__highlight b{font-family:var(--font-display);font-weight:800}
+    .calc__note{margin-top:18px;font-size:12.5px;color:var(--muted);max-width:78ch;line-height:1.65}
+  </style>
 </head>
 <body>
   <a class="skip" href="#main">Lewati ke konten utama</a>
@@ -45,7 +74,8 @@
         <a href="#aktivasi">Program</a>
         <a href="#dampak">Dampak</a>
         <a href="#kolaborator">Kolaborator</a>
-        <a class="btn btn--gold nav__cta" href="https://docs.google.com/forms/d/e/1FAIpQLSdrREW9ne9C_PzJrM0k7WuijeEWiNXVe7Xag3JzYLCIQ_6AnA/viewform?usp=dialog" target="_blank" rel="noopener">Kolaborasi</a>
+        <a href="#kalkulator">Kalkulator</a>
+        <a class="btn btn--gold nav__cta" href="https://wa.link/yai5zd" target="_blank" rel="noopener">Kolaborasi</a>
       </nav>
     </div>
   </header>
@@ -77,7 +107,7 @@
         <div class="hero__cta">
           <!-- ============ EDIT: link form pendaftaran (Google Form) — ganti URL di tag <a> bila form berganti ============ -->
           <a class="btn btn--gold" href="https://docs.google.com/forms/d/e/1FAIpQLSdrREW9ne9C_PzJrM0k7WuijeEWiNXVe7Xag3JzYLCIQ_6AnA/viewform?usp=dialog" target="_blank" rel="noopener" aria-label="Daftar menjadi relawan Jejak Kota">Daftar jadi Relawan <span class="arrow">→</span></a>
-          <a class="btn btn--ghost" href="https://docs.google.com/forms/d/e/1FAIpQLSdrREW9ne9C_PzJrM0k7WuijeEWiNXVe7Xag3JzYLCIQ_6AnA/viewform?usp=dialog" target="_blank" rel="noopener">Ajak kolaborasi</a>
+          <a class="btn btn--ghost" href="https://wa.link/yai5zd" target="_blank" rel="noopener">Ajak kolaborasi</a>
           <a class="btn btn--ghost" href="#aktivasi">Lihat program</a>
         </div>
       </div>
@@ -245,6 +275,44 @@
       </div>
     </section>
 
+    <!-- ============================ KALKULATOR EMISI ============================ -->
+    <section class="section reveal" id="kalkulator">
+      <span class="station" aria-hidden="true"></span>
+      <div class="wrap">
+        <p class="eyebrow">05 — Kalkulator Emisi</p>
+        <h2 class="section-head" style="font-size:clamp(2rem,5vw,3.1rem);margin-top:16px;">
+          Hitung jejak karbon perjalananmu.
+        </h2>
+        <p class="lead">Masukkan jarak tempuh, lalu bandingkan perkiraan emisi CO&#8322; tiap moda
+           transportasi dengan berjalan kaki.</p>
+
+        <div class="calc">
+          <div class="calc__control">
+            <label for="calc-km">Jarak tempuh</label>
+            <div class="calc__inputrow">
+              <input id="calc-km" type="number" min="0" max="5000" step="0.5" value="5" inputmode="decimal" aria-label="Jarak tempuh dalam kilometer" />
+              <span class="calc__unit">km</span>
+            </div>
+            <input id="calc-range" class="calc__range" type="range" min="0" max="100" step="0.5" value="5" aria-label="Geser jarak tempuh" />
+            <p class="calc__hint">Ketik jarak berapa pun, atau geser untuk 0&ndash;100 km.</p>
+          </div>
+
+          <div class="calc__results" id="calc-results" aria-live="polite"></div>
+        </div>
+
+        <div class="calc__highlight" id="calc-highlight"></div>
+
+        <p class="calc__note">
+          <strong>Catatan:</strong> angka di atas adalah <strong>estimasi dari satuan emisi yang
+          digeneralisasi</strong> &mdash; motor bensin umum, mobil bensin umum, bis umum, dan pesawat
+          avtur umum &mdash; dalam kilogram CO&#8322; per kilometer (untuk bis dan pesawat dihitung per
+          orang). Nilai sebenarnya bisa berbeda tergantung jenis kendaraan, bahan bakar, jumlah penumpang,
+          dan rute. Berjalan kaki dihitung 0 emisi langsung. Gunakan angka ini sebagai gambaran kasar,
+          bukan perhitungan resmi.
+        </p>
+      </div>
+    </section>
+
     <!-- ============================ KONTAK / CTA ============================ -->
     <section class="section cta-band reveal" id="kontak">
       <span class="station" aria-hidden="true"></span>
@@ -298,6 +366,46 @@
     </div>
   </footer>
 
+  <!-- Kalkulator emisi: faktor digeneralisasi (kg CO2 per km). Ubah angka 'f' di bawah bila perlu. -->
+  <script>
+  (function(){
+    var MODES=[
+      {key:'walk', label:'Jalan kaki',        sub:'Bebas emisi langsung',                 f:0, walk:true},
+      {key:'motor',label:'Motor (bensin)',    sub:'\u00B1 0,10 kg CO\u2082 / km',          f:0.10},
+      {key:'bus',  label:'Bis umum',          sub:'\u00B1 0,10 kg CO\u2082 / km \u00B7 per orang', f:0.10},
+      {key:'car',  label:'Mobil (bensin)',    sub:'\u00B1 0,19 kg CO\u2082 / km',          f:0.19},
+      {key:'plane',label:'Pesawat (avtur)',   sub:'\u00B1 0,25 kg CO\u2082 / km \u00B7 per orang', f:0.25}
+    ];
+    var num=document.getElementById('calc-km'),
+        rng=document.getElementById('calc-range'),
+        box=document.getElementById('calc-results'),
+        hl =document.getElementById('calc-highlight');
+    if(!num||!box||!hl) return;
+    function fmt(v){return v.toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});}
+    function render(){
+      var km=parseFloat(num.value); if(isNaN(km)||km<0)km=0;
+      var data=MODES.map(function(m){return {m:m,co2:km*m.f};});
+      var max=Math.max.apply(null,data.map(function(d){return d.co2;}))||1;
+      box.innerHTML=data.map(function(d){
+        var w=Math.min(100,(d.co2/max)*100);
+        var val=d.m.walk?'0':(fmt(d.co2)+' kg CO\u2082');
+        return '<div class="calc__row'+(d.m.walk?' calc__row--walk':'')+'">'
+          +'<div class="calc__rowhead"><span class="calc__mode">'+d.m.label+'</span>'
+          +'<span class="calc__val">'+val+'</span></div>'
+          +'<div class="calc__bar"><div class="calc__fill" style="width:'+(d.m.walk?0:w)+'%"></div></div>'
+          +'<div class="calc__sub">'+d.m.sub+'</div></div>';
+      }).join('');
+      hl.innerHTML='Berjalan kaki sejauh <b>'+fmt(km)+' km</b> menekan hingga '
+        +'<b>'+fmt(km*0.25)+' kg CO\u2082</b> dibanding pesawat, atau '
+        +'<b>'+fmt(km*0.19)+' kg CO\u2082</b> dibanding mobil.';
+    }
+    num.addEventListener('input',function(){
+      var v=parseFloat(num.value); if(!isNaN(v)&&v<=parseFloat(rng.max))rng.value=v; render();
+    });
+    rng.addEventListener('input',function(){ num.value=rng.value; render(); });
+    render();
+  })();
+  </script>
   <script src="assets/js/main.js" defer></script>
 </body>
 </html>
